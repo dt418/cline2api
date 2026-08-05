@@ -40,11 +40,16 @@
       "area": "cli",
       "title": "Official Cline CLI process lifecycle driver",
       "user_visible_behavior": "cline2api can start, monitor, cancel, and finish an authorized official Cline CLI process with bounded diagnostics.",
-      "status": "not_started",
+      "status": "passing",
       "dependencies": ["CORE-001"],
-      "verification": ["CLI lifecycle contract tests on Windows, macOS, and Linux"],
-      "evidence": "",
-      "notes": "Use only documented official CLI behavior; no internal protocol inspection."
+      "verification": [
+        "pnpm exec vitest run packages/cli-driver/test",
+        "pnpm verify",
+        "CLINE2API_PNPM_STORE_DIR=/workspace/.pnpm-store HARNESS_SKIP_INSTALL=1 pnpm harness:init",
+        "git diff --check"
+      ],
+      "evidence": "2026-08-05 on branch work/cli-001-acp-driver at implementation commit eafae8a: pnpm exec vitest run packages/cli-driver/test exited 0 (9 files, 67 tests); pnpm verify exited 0 (format check, typecheck, 12 files and 77 tests); CLINE2API_PNPM_STORE_DIR=/workspace/.pnpm-store HARNESS_SKIP_INSTALL=1 pnpm harness:init exited 0 with successful initialization and the same 77 tests; explicit pnpm typecheck, pnpm test, and git diff --check exited 0. Coverage includes real-starter authentication and typed-terminal preservation without NDJSON fallback, bounded ACP initialization timeout cleanup, timeout/abort and cancellation precedence, immediate non-zero/signal process_exit, zero-exit/end_turn buffering, exact-boundary CRLF framing, ACP-first selection, bounded diagnostics, and callback-injected host behavior. Evidence contains no live tokens, prompts, provider responses, or stderr payloads.",
+      "notes": "Implementation commits cd8ddf4 through eafae8a are present on work/cli-001-acp-driver. Task 6 historically reported 15 Prettier discrepancies and the final review later observed 17; current formatting reports zero discrepancies after normalization. The sandbox default pnpm store is not writable, so store-using commands continue to set CLINE2API_PNPM_STORE_DIR=/workspace/.pnpm-store. Cross-platform CI remains a later operations gate."
     },
     {
       "id": "API-001",

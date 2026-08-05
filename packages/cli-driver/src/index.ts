@@ -1,0 +1,30 @@
+export { createClineCliDriver } from "./driver.js";
+export { AcpUnavailableError, ClineCliError } from "./errors.js";
+export type { ClineCliErrorCode } from "./errors.js";
+export type {
+  AcpConnectionFactory,
+  AcpConnectionOptions,
+  AcpSessionMessage,
+  AcpSessionPort,
+  AcpTransportOptions,
+  AcpTransportStarter,
+  ClineCliDiagnostics,
+  ClineCliDriver,
+  ClineCliDriverOptions,
+  ClineCliEvent,
+  ClineCliHost,
+  ClineCliRequest,
+  ClineCliResult,
+  ClineCliRun,
+  ClineEventKind,
+  ClineRunStatus,
+  ClineTransport,
+  ClineTransportPreference,
+  LaunchSpec,
+  NdjsonLimits,
+  NdjsonTransportOptions,
+  NdjsonTransportStarter,
+  PendingPermissionRegistry,
+  SpawnProcess,
+  TransportOptions,
+} from "./types.js";
