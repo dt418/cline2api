@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "project": "cline2api",
+  "features": [
+    {
+      "id": "HARN-001",
+      "priority": 1,
+      "area": "harness",
+      "title": "Production Harness bootstrap and self-validation",
+      "user_visible_behavior": "A new session can validate repository state and run the standard verification command from any supported platform.",
+      "status": "passing",
+      "dependencies": [],
+      "verification": [
+        "pnpm exec vitest run scripts/harness/validate-harness.test.ts",
+        "pnpm exec vitest run scripts/harness/harness-init-lib.test.ts",
+        "HARNESS_SKIP_INSTALL=1 pnpm harness:init"
+      ],
+      "evidence": "pnpm exec vitest run scripts/harness/validate-harness.test.ts: 3 passed; pnpm exec vitest run scripts/harness/harness-init-lib.test.ts: 5 passed; HARNESS_SKIP_INSTALL=1 pnpm harness:init: exited 0 with pnpm format:check, pnpm typecheck, and pnpm test (10 passed).",
+      "notes": "Bootstrap state and verification evidence were validated on 2026-08-05."
+    },
+    {
+      "id": "CORE-001",
+      "priority": 2,
+      "area": "core",
+      "title": "Monorepo and TypeScript toolchain baseline",
+      "user_visible_behavior": "The repository installs, typechecks, formats, and runs the core package tests through stable pnpm commands.",
+      "status": "passing",
+      "dependencies": [],
+      "verification": [
+        "pnpm exec vitest run packages/core/test/index.test.ts",
+        "pnpm typecheck",
+        "pnpm format:check"
+      ],
+      "evidence": "pnpm exec vitest run packages/core/test/index.test.ts: 2 passed; pnpm typecheck: passed; pnpm format:check: all files matched.",
+      "notes": "Core identity function is intentionally minimal; provider contracts are a later feature."
+    },
+    {
+      "id": "CLI-001",
+      "priority": 3,
+      "area": "cli",
+      "title": "Official Cline CLI process lifecycle driver",
+      "user_visible_behavior": "cline2api can start, monitor, cancel, and finish an authorized official Cline CLI process with bounded diagnostics.",
+      "status": "not_started",
+      "dependencies": ["CORE-001"],
+      "verification": ["CLI lifecycle contract tests on Windows, macOS, and Linux"],
+      "evidence": "",
+      "notes": "Use only documented official CLI behavior; no internal protocol inspection."
+    },
+    {
+      "id": "API-001",
+      "priority": 4,
+      "area": "api",
+      "title": "OpenAI-compatible discovery and health endpoints",
+      "user_visible_behavior": "Existing clients can discover cline2api and verify that its local provider endpoint is healthy.",
+      "status": "not_started",
+      "dependencies": ["CORE-001"],
+      "verification": ["HTTP contract tests for health and model discovery"],
+      "evidence": "",
+      "notes": "Keep the adapter boundary compatible with existing routers."
+    },
+    {
+      "id": "API-002",
+      "priority": 5,
+      "area": "api",
+      "title": "Chat completions and SSE stream translation",
+      "user_visible_behavior": "Clients can request non-streaming or streaming chat completions through one OpenAI-compatible contract.",
+      "status": "not_started",
+      "dependencies": ["CLI-001", "API-001"],
+      "verification": [
+        "Contract and integration tests for non-streaming, SSE, timeout, and cancellation"
+      ],
+      "evidence": "",
+      "notes": "Streaming-first design; preserve cancellation and terminal error semantics."
+    },
+    {
+      "id": "SAFE-001",
+      "priority": 6,
+      "area": "security",
+      "title": "Configuration, secret redaction, timeout, and cancellation",
+      "user_visible_behavior": "Configuration failures are actionable and diagnostics never expose credentials or sensitive provider content.",
+      "status": "not_started",
+      "dependencies": ["API-002"],
+      "verification": ["Redaction, timeout, cancellation, and malformed-configuration tests"],
+      "evidence": "",
+      "notes": "No secret may enter feature evidence, logs, snapshots, commits, or CI artifacts."
+    },
+    {
+      "id": "PLUGIN-001",
+      "priority": 7,
+      "area": "plugins",
+      "title": "Plugin SDK and capability contracts",
+      "user_visible_behavior": "Integrations can register against stable capability contracts without coupling to Cline internals.",
+      "status": "not_started",
+      "dependencies": ["SAFE-001"],
+      "verification": ["Plugin contract, compatibility, and isolation tests"],
+      "evidence": "",
+      "notes": "One core adapter path; integrations must not create divergent protocol implementations."
+    },
+    {
+      "id": "INTEGRATION-001",
+      "priority": 8,
+      "area": "integrations",
+      "title": "9Router adapter package",
+      "user_visible_behavior": "9Router can use cline2api through its supported provider interface.",
+      "status": "not_started",
+      "dependencies": ["PLUGIN-001"],
+      "verification": ["9Router provider integration contract tests"],
+      "evidence": "",
+      "notes": "Do not compete with or reimplement 9Router routing behavior."
+    },
+    {
+      "id": "INTEGRATION-002",
+      "priority": 9,
+      "area": "integrations",
+      "title": "OmniRoute adapter package",
+      "user_visible_behavior": "OmniRoute can use cline2api through its supported provider interface.",
+      "status": "not_started",
+      "dependencies": ["PLUGIN-001"],
+      "verification": ["OmniRoute provider integration contract tests"],
+      "evidence": "",
+      "notes": "Do not compete with or reimplement OmniRoute routing behavior."
+    },
+    {
+      "id": "INTEGRATION-003",
+      "priority": 10,
+      "area": "integrations",
+      "title": "OpenCodeX adapter package",
+      "user_visible_behavior": "OpenCodeX can use cline2api through its supported provider interface.",
+      "status": "not_started",
+      "dependencies": ["PLUGIN-001"],
+      "verification": ["OpenCodeX provider integration contract tests"],
+      "evidence": "",
+      "notes": "Do not compete with or reimplement OpenCodeX routing behavior."
+    },
+    {
+      "id": "OPS-001",
+      "priority": 11,
+      "area": "operations",
+      "title": "Observability, diagnostics, and release CI matrix",
+      "user_visible_behavior": "Maintainers can diagnose supported-platform failures and release reproducible packages with evidence.",
+      "status": "not_started",
+      "dependencies": ["SAFE-001", "PLUGIN-001"],
+      "verification": ["Cross-platform CI, diagnostics, and release reproducibility checks"],
+      "evidence": "",
+      "notes": "Diagnostics must remain redacted and bounded."
+    }
+  ]
+}
