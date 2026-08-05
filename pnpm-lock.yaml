@@ -21,6 +21,12 @@ importers:
         specifier: 4.1.10
         version: 4.1.10(@types/node@26.1.2)(vite@8.2.0(@types/node@26.1.2))
 
+  packages/api:
+    dependencies:
+      '@cline2api/core':
+        specifier: workspace:*
+        version: link:../core
+
   packages/cli-driver:
     dependencies:
       '@agentclientprotocol/sdk':

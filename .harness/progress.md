@@ -3,12 +3,28 @@
 ## Current Verified State
 
 - **Repository root directory:** `/workspace/cline2api`
-- **Current branch:** `work/cli-001-acp-driver`
+- **Current branch:** `work/api-001-partial`
 - **Standard startup path:** `pnpm harness:init`
 - **Sandbox startup path:** `CLINE2API_PNPM_STORE_DIR=/workspace/.pnpm-store pnpm harness:init`
 - **Standard verification path:** `pnpm verify`
-- **Active feature:** None. `CLI-001` passed its declared local verification gates.
-- **Current blocker:** None for `CLI-001`. Cross-platform CI remains a later operations gate.
+- **Active feature:** `API-001` is in progress; Tasks 1-4 are implemented and Tasks 5-6 are intentionally paused per user request.
+- **Current blocker:** No implementation blocker for the completed layers. HTTP route/server wiring and final API-001 Harness evidence remain outstanding by choice; cross-platform CI remains a later operations gate.
+
+## API-001 Design Session — 2026-08-05
+
+- **Selected scope:** OpenAI-compatible `GET /health` and `GET /v1/models` using a deterministic reference catalog with an explicit JSON overlay.
+- **Design decision:** Use an OpenCodeX-inspired canonical registry and startup-resolved immutable catalog. No live provider discovery, Cline process execution, authentication, or hot reload is part of API-001.
+- **Spec:** `docs/superpowers/specs/2026-08-05-api-001-openai-discovery-health-design.md` and its implementation plan are approved and committed.
+- **Baseline:** The pre-API Harness baseline exited 0 (format check, typecheck, 77 tests).
+
+## API-001 Partial Implementation — 2026-08-05
+
+- **Completed scope:** Tasks 1-4 add the API package, bounded UTF-8 catalog loading and validation, immutable model resolution, and safe `/health`/`/v1/models` response projections. No HTTP server or route handler is included yet.
+- **Integration commits:** `5e7ae2e` through `711f8bf` on `work/api-001-partial` (cherry-picked from the implementation branch for integration with `main`).
+- **Verification:** `pnpm test` exited 0 with 16 files and 111 tests; `pnpm typecheck` exited 0; targeted Prettier checks for the API package and root TypeScript configuration exited 0; `git diff --check` exited 0.
+- **Harness limitation:** The global format/Harness path still reports only the ignored `.superpowers/sdd/.../task-{1,2,3,4}-brief.md` artifacts as unformatted. Those generated review briefs are not part of the product change and were left untouched.
+- **Status rule:** Keep `API-001` `in_progress`; do not record passing evidence until Task 5 route/server contract tests and Task 6 final Harness verification are completed.
+- **Next safe action:** Resume Task 5 (routes/server) in a new scoped session when requested. No remaining task agent is active while this work is paused.
 
 ## CLI-001 Harness verification — 2026-08-05
 
@@ -18,7 +34,7 @@
 - **Formatting history:** Task 6 historically observed 15 discrepancies; the later final review observed 17 after more SDD artifacts existed. The current `pnpm format:check` result is zero discrepancies.
 - **Clean diff gate:** `git diff --check` exited 0.
 - **Sandbox note:** The default pnpm store is not writable in this environment. Continue using `CLINE2API_PNPM_STORE_DIR=/workspace/.pnpm-store` for pnpm operations that access the store.
-- **Next safe action:** Select `API-001` in a new scoped session. Do not treat the unrun cross-platform matrix as completed operations evidence.
+- **Historical next action (superseded):** Have the user review the API-001 spec and invoke the writing-plans skill. Tasks 1-4 have since been implemented; use the API-001 Partial Implementation section above for the current handoff. Do not treat the unrun cross-platform matrix as completed operations evidence.
 
 ## Historical Session Record — 2026-08-05 (pre-implementation baseline)
 
