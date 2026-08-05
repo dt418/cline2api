@@ -57,11 +57,11 @@
       "area": "api",
       "title": "OpenAI-compatible discovery and health endpoints",
       "user_visible_behavior": "Existing clients can discover cline2api and verify that its local provider endpoint is healthy.",
-      "status": "not_started",
+      "status": "in_progress",
       "dependencies": ["CORE-001"],
       "verification": ["HTTP contract tests for health and model discovery"],
       "evidence": "",
-      "notes": "Keep the adapter boundary compatible with existing routers."
+      "notes": "Tasks 1-4 are implemented through immutable catalog resolution and safe JSON response projections (commits 5e7ae2e..711f8bf on the integration branch). Route/server wiring (Task 5) and final API-001 Harness verification (Task 6) remain paused per user request; keep this feature in_progress until those tasks pass."
     },
     {
       "id": "API-002",

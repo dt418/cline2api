@@ -1,4 +1,8 @@
 {
   "files": [],
-  "references": [{ "path": "packages/core" }, { "path": "packages/cli-driver" }]
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/api" },
+    { "path": "packages/cli-driver" }
+  ]
 }
